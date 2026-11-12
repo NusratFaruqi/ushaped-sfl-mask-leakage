@@ -20,3 +20,4 @@ registration/*.aux
 /paper/tables/cost.*
 /paper/figs/*.pdf
 /paper/figs/*.png
+.pytest_cache/

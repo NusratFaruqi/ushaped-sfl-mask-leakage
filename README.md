@@ -32,6 +32,7 @@ paper/
   scripts/             cost_table.py (communication and compute cost), plot_leakage_map.py (Figure 2)
   tables/              output folder of cost_table.py
   figs/                output folder of the figure scripts
+tests/                 checks that run without data or GPU (registered-script hashes, smoke runs)
 SHA256SUMS             checksum of every file in this repository
 ```
 
@@ -67,7 +68,14 @@ The loaders look for each dataset by folder name under `/kaggle/input`; elsewher
 
 ## Quick check (CPU, synthetic data)
 
-These commands test the code paths, not a result.
+The test suite checks that the two confirmatory analysis scripts match their registered SHA-256 hashes and that training and the attacks run end to end on synthetic data. It needs no data or GPU and takes about a minute on a CPU:
+
+```bash
+pip install pytest
+python -m pytest tests
+```
+
+The same smoke runs by hand (they test the code paths, not a result):
 
 ```bash
 cd code
