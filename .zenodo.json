@@ -1,0 +1,25 @@
+{
+  "title": "Mask leakage in U-shaped split federated learning: code",
+  "upload_type": "software",
+  "description": "Code for the paper \"Labels Do Not Stay Local: Mask Leakage in U-Shaped Split Federated Learning for Medical Image Segmentation\": the split federated U-Net (PyTorch), the image- and mask-leakage attacks, the analysis scripts that produce every table and figure, and the Kaggle run plan. Result files, data splits and pre-registration documents are archived in a separate data record. No images are included; the datasets are available from their owners.",
+  "creators": [
+    {
+      "name": "Faruqi, Nusrat",
+      "affiliation": "Department of Computer Science and Engineering, Daffodil International University"
+    },
+    {
+      "name": "Joy, Md. Salim Reza",
+      "affiliation": "Department of Computer Science and Engineering, Daffodil International University"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "split federated learning",
+    "medical image segmentation",
+    "gradient inversion",
+    "label leakage",
+    "privacy",
+    "U-Net"
+  ],
+  "access_right": "open"
+}

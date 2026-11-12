@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+/runs/
+/runs_*/
+/code/runs/
+/code/runs_*/
+code/kaggle/build/
+*.pt
+*.pth
+*.aux
+*.log.tmp
+registration/*.aux
+
+# data record (Zenodo), extracted into the repository root
+/results/
+/splits/
+/registration/
+/paper/tables/cost.*
+/paper/figs/*.pdf
+/paper/figs/*.png

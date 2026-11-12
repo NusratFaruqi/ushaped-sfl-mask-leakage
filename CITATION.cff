@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below, together with the paper it accompanies."
+title: "Mask leakage in U-shaped split federated learning: code"
+version: 1.0.0
+license: MIT
+repository-code: "https://github.com/NusratFaruqi/ushaped-sfl-mask-leakage"
+authors:
+  - family-names: Faruqi
+    given-names: Nusrat
+    affiliation: "Department of Computer Science and Engineering, Daffodil International University"
+  - family-names: Joy
+    given-names: Md. Salim Reza
+    affiliation: "Department of Computer Science and Engineering, Daffodil International University"
+keywords:
+  - split federated learning
+  - medical image segmentation
+  - gradient inversion
+  - label leakage
+  - privacy
+  - U-Net
+abstract: >-
+  Code for the paper
+  "Labels Do Not Stay Local: Mask Leakage in U-Shaped Split Federated Learning for
+  Medical Image Segmentation".
