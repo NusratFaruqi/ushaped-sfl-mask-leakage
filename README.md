@@ -1,12 +1,14 @@
 # Mask leakage in U-shaped split federated learning
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24182668.svg)](https://doi.org/10.5281/zenodo.24182668)
+
 Code for the paper
 
 > N. Faruqi, M. S. R. Joy, et al. *Labels Do Not Stay Local: Mask Leakage in U-Shaped Split Federated Learning for Medical Image Segmentation.* Manuscript submitted for publication.
 
 In U-shaped split federated learning a hospital keeps the first and last layers of a segmentation network, so its images and masks never leave the hospital. The server only sees an intermediate feature, and the hospital returns the gradient of the loss with respect to the server's output. We show that for the cross-entropy loss this returned gradient is an affine function of a smoothed copy of each image's mask, and we measure how much an honest-but-curious server can recover from it. The experiments use PolypGen (five colonoscopy centres) and HAM10000 (dermoscopy) with an ImageNet-pretrained ResNet-34 U-Net, cut at six points.
 
-The result files, data splits and pre-registration documents are archived separately as a data record on Zenodo (doi: [DATA DOI]). Every number in the paper's tables and figures can be traced to a file there and to the script in this repository that produced it (see [From results to the paper](#from-results-to-the-paper)).
+The result files, data splits and pre-registration documents are archived separately as a data record on Zenodo (doi:[10.5281/zenodo.24182702](https://doi.org/10.5281/zenodo.24182702)). Every number in the paper's tables and figures can be traced to a file there and to the script in this repository that produced it (see [From results to the paper](#from-results-to-the-paper)).
 
 ## Contents
 
@@ -124,7 +126,7 @@ kaggle kernels push -p code/kaggle/build/tier<tier>
 | Supplement: exploratory controls (Table S8) | `code/analysis/r1_analysis.py` | `results/revision_r1/` |
 | Section 7.4 (further training seeds), Section 7.6 (gradient-only noise), Supplement Tables S9 and S10 | `code/analysis/r456_analysis.py` | `results/revision_r456/`, `results/tierR3/`–`results/tierR6/` |
 
-To use the stored results, download the data record (doi: [DATA DOI]) and extract it into the root of this repository; it adds `results/`, `splits/`, `registration/` and `paper/tables/`, which the paths below refer to. Each `results/tier*/` folder holds the small output files of one Kaggle notebook: per-image test metrics (`test_per_image.csv`), attack outputs (`attacks_*.json`, `revision_*.json`), per-command logs and the notebook log. Model checkpoints are not included. Kaggle account names in the logs are replaced by `<kaggle-user>`.
+To use the stored results, download the data record (doi:[10.5281/zenodo.24182702](https://doi.org/10.5281/zenodo.24182702)) and extract it into the root of this repository; it adds `results/`, `splits/`, `registration/` and `paper/tables/`, which the paths below refer to. Each `results/tier*/` folder holds the small output files of one Kaggle notebook: per-image test metrics (`test_per_image.csv`), attack outputs (`attacks_*.json`, `revision_*.json`), per-command logs and the notebook log. Model checkpoints are not included. Kaggle account names in the logs are replaced by `<kaggle-user>`.
 
 The analysis scripts take the result folders as arguments, for example:
 
@@ -146,7 +148,7 @@ shasum -a 256 -c SHA256SUMS
 
 ## Citation
 
-If you use this code, please cite the paper (reference above; it will be updated on publication) and this software release (see `CITATION.cff`). If you use the results or splits, please also cite the data record (doi: [DATA DOI]).
+If you use this code, please cite the paper (reference above; it will be updated on publication) and this software release (see `CITATION.cff`). If you use the results or splits, please also cite the data record (doi:[10.5281/zenodo.24182702](https://doi.org/10.5281/zenodo.24182702)).
 
 ## Licence
 
