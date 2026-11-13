@@ -9,6 +9,9 @@ R4 (FedAvg seed 1) and R5 (FedAvg seed 2), per cut U1-U4, on the 152 attacked te
                from the registered seed-1 attack files, same model and frame order) and the inverter on d only
   train        round-1 replay of a local epoch on training frames: Setting A and B minus max(b2, 0)
   presence     (seed 2) AUROC of the recovered mask area for 'polyp present'
+  A_unified    (seed 2) Setting A on x_hat minus the per-image maximum of b1, b2 and b2^d (the client decoder on the true d)
+  H6rule       (seed 1) each retrained inverter on (g, d) minus max(b1, b2), b1 and b2 from the registered seed-1 files (the H6 rule)
+  H5c_seed1    true-image Setting A on the registered seed-1 files minus max(b1, b2*), per cut (seed 1 alone)
 R6 (gradient-only noise nu_g = 2, 4 at U2, FedAvg seeds 1 and 2) with tier R3 (seed 0, nu_g = 1, 2, 4):
   utility      centre mean of per-image Dice on polyp-positive frames of C1-C5 (registered utility metric)
   A, B         Setting A minus b2 on x_hat; inverter on (g, d), retrained on noisy gradients, minus the inverter on d only
@@ -47,6 +50,7 @@ def load(f):
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("results"); ap.add_argument("--out", required=True)
     a = ap.parse_args(); os.makedirs(a.out, exist_ok=True); rng = np.random.default_rng(0)
+    rng2 = np.random.default_rng(1)  # added quantities draw from their own stream, so earlier intervals are unchanged
     J = lambda *p: os.path.join(a.results, *p)
     out = {"B": {}, "train": {}, "presence": {}, "noise": {}}
     runs = {1: J("tierR4", "runs", "fedavg_seed1"), 2: J("tierR5", "runs", "fedavg_seed2")}
@@ -69,11 +73,17 @@ def main():
                 b1 = np.asarray(reg["label_prior"]["dice"], float)[pos]
                 b2 = np.asarray(reg["label_pred_server"]["dice"], float)[pos]
                 o["unified"] = summ(D("B_inv_both") - np.maximum.reduce([b1, b2, D("B_inv_d")]), rng)
+                o["H6rule_s0"] = summ(D("B_inv_both") - np.maximum(b1, b2), rng2)
+                o["H6rule_s1"] = summ(D("B_inv_both_s1") - np.maximum(b1, b2), rng2)
             else:
                 o["unified_no_b2"] = summ(D("B_inv_both") - np.maximum(D("b1_prior"), D("B_inv_d")), rng)
                 o["A_minus_b2"] = summ(D("A_xhat") - D("b2_pred_xhat"), rng)
+                o["A_unified"] = summ(D("A_xhat") - np.maximum.reduce([D("b1_prior"), D("b2_pred_xhat"), D("b2d_true_d_xhat_skips")]), rng2)
                 out["presence"][f"seed2_U{cut}"] = {k: auroc(r[k]["area"], pos) for k in
                                                      ("A_xhat", "b2_pred_xhat", "b2d_true_d_xhat_skips", "B_inv_both", "B_inv_d")}
+            if sd == 1:
+                bs = np.maximum(np.asarray(reg["label_prior"]["dice"], float)[pos], np.asarray(reg["label_pred_on_x"]["dice"], float)[pos])
+                out.setdefault("H5c_seed1", {})[f"U{cut}"] = summ(np.asarray(reg["label_oracle"]["dice"], float)[pos] - bs, rng2)
             out["B"][f"seed{sd}_U{cut}"] = o
         for f in glob.glob(os.path.join(run, "revision_*_r1_tr1.json")):
             r = json.load(open(f))
@@ -123,9 +133,11 @@ def report(out):
     for k, o in out["B"].items():
         L.append(f"- {k}: (g,d)-d seed A {F(o['B_gain_s0'])}; seed B {F(o['B_gain_s1'])}; mean of both {F(o['B_gain_avg2'])}")
         L.append(f"  shuffled g: {F(o['B_gshuf_s0'])} / {F(o['B_gshuf_s1'])}; (g,d)-g {F(o['B_both_minus_g'])}")
-        if "unified" in o: L.append(f"  vs max(b1,b2,d): {F(o['unified'])}")
-        if "unified_no_b2" in o: L.append(f"  vs max(b1,d): {F(o['unified_no_b2'])}; A - b2: {F(o['A_minus_b2'])}")
+        if "unified" in o: L.append(f"  vs max(b1,b2,d): {F(o['unified'])}; H6 rule (vs max(b1,b2)): {F(o['H6rule_s0'])} / {F(o['H6rule_s1'])}")
+        if "unified_no_b2" in o: L.append(f"  vs max(b1,d): {F(o['unified_no_b2'])}; A - b2: {F(o['A_minus_b2'])}; A - max(b1,b2,b2d): {F(o['A_unified'])}")
         L.append("  means: " + ", ".join(f"{m}={v:.3f}" for m, v in o["means"].items()))
+    L += ["", "## Seed 1, true image, gain over max(b1, b2*) (H5c definition of the paper)"]
+    L += [f"- {k}: {F(v)}" for k, v in out["H5c_seed1"].items()]
     L += ["", "## Round-1 training-frame replay"]
     for k, o in out["train"].items():
         L.append(f"- {k} (n={o['n_pos']}, lr={o['lr']}, amp={o['amp']}): A known {F(o['A_known_minus_b2'])}; "
