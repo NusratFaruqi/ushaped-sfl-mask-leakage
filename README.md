@@ -122,6 +122,7 @@ kaggle kernels push -p code/kaggle/build/tier<tier>
 | Supplement: cost (Table S6) | `paper/scripts/cost_table.py` | `paper/tables/cost.tex` |
 | Supplement: channel runs and leakage (S4, Table S7) | `label_tests.py`, `image_tests.py` | `results/label_tests_G2/`, `results/tierC*`, `results/tierE/` |
 | Supplement: exploratory controls (Table S8) | `code/analysis/r1_analysis.py` | `results/revision_r1/` |
+| Section 7.4 (further training seeds), Section 7.6 (gradient-only noise), Supplement Tables S9 and S10 | `code/analysis/r456_analysis.py` | `results/revision_r456/`, `results/tierR3/`–`results/tierR6/` |
 
 To use the stored results, download the data record (doi: [DATA DOI]) and extract it into the root of this repository; it adds `results/`, `splits/`, `registration/` and `paper/tables/`, which the paths below refer to. Each `results/tier*/` folder holds the small output files of one Kaggle notebook: per-image test metrics (`test_per_image.csv`), attack outputs (`attacks_*.json`, `revision_*.json`), per-command logs and the notebook log. Model checkpoints are not included. Kaggle account names in the logs are replaced by `<kaggle-user>`.
 
