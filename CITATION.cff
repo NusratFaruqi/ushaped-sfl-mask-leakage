@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below, together with the paper it accompanies."
 title: "Mask leakage in U-shaped split federated learning: code"
-version: 1.0.0
+version: 1.0.1
 license: MIT
 repository-code: "https://github.com/NusratFaruqi/ushaped-sfl-mask-leakage"
 authors:

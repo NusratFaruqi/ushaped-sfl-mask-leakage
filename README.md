@@ -1,6 +1,6 @@
 # Mask leakage in U-shaped split federated learning
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24182668.svg)](https://doi.org/10.5281/zenodo.24182668)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24182667.svg)](https://doi.org/10.5281/zenodo.24182667) (all versions)
 
 Code for the paper
 
